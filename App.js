@@ -6,30 +6,29 @@ import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { insertElementsInHTML } from './utils/createElements';
 import { useForm, Controller } from 'react-hook-form';
-import { Picker } from '@react-native-picker/picker'
 let tempt = []
 
 export default function App() {
-  const { control, handleSubmit, formState: { errors }} = useForm()
+  const { control, handleSubmit, formState: { errors } } = useForm()
   const onSubmit = data => console.log(data)
 
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  const [values, setValues] = useState('');
+  // const [selectedLanguage, setSelectedLanguage] = useState();
+  // const [values, setValues] = useState('');
   const [valueList, setValueList] = useState([]);
   let elementsHTML = ''
 
   const handleSetValue = data => {
-    console.log(data)
-  }
-  
-  const setValuesInList = () => {
-    tempt.push(values)
+    tempt.push(data)
     console.log(tempt)
   }
-  
-  const saveValuesInList = () => { 
+
+  // const setValuesInList = () => {
+    
+  // }
+
+  const saveValuesInList = () => {
     elementsHTML = insertElementsInHTML(tempt)
-    console.log(elementsHTML)
+    console.log('ELEMENTS', elementsHTML)
   }
 
 
@@ -41,7 +40,7 @@ export default function App() {
 
     await shareAsync(file.uri)
   }
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -52,7 +51,7 @@ export default function App() {
         <Controller
           control={control}
           name='name'
-          render={({ field: {onChange, onBlur, value} }) => (
+          render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
               value={value}
@@ -63,25 +62,10 @@ export default function App() {
           )}
         />
 
-        <Controller
-          control={control}
-          name='typeCash'
-          render={({ field: {onChange, onBlur, value}}) => (
-            <Picker
-              selectedValue={value}
-              onValueChange={onChange}
-            >
-              <Picker.Item label='PIX' value='pix' />
-              <Picker.Item label='Dinheiro' value='dinheiro' />
-              <Picker.Item label='Cartão' value='cartao' />
-            </Picker>
-          )}
-        />
-        
-        <Button title='adicionar' onPress={handleSubmit(handleSetValue)}/>
-        <Button title='salvar' onPress={saveValuesInList}/>
-        <Button title='limpar' onPress={() => setValueList([])}/>
-        <Button title='gerar PDF' onPress={generatePdf}/>
+        <Button style={styles.buttons} title='adicionar' onPress={handleSubmit(handleSetValue)} />
+        <Button style={styles.buttons} title='salvar' onPress={saveValuesInList} />
+        <Button style={styles.buttons} title='limpar' onPress={() => setValueList([])} />
+        <Button style={styles.buttons} title='gerar PDF' onPress={generatePdf} />
       </View>
       <StatusBar style="auto" />
 
@@ -112,5 +96,8 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderStyle: 'solid',
     borderColor: '#000000'
+  },
+  buttons: {
+    marginHorizontal: 10,
   }
 });
