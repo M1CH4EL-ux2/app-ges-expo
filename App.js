@@ -6,6 +6,7 @@ import { printToFileAsync } from 'expo-print';
 import { shareAsync } from 'expo-sharing';
 import { insertElementsInHTML } from './utils/createElements';
 import { useForm, Controller } from 'react-hook-form';
+import Radio from './components/Radio';
 let tempt = []
 
 export default function App() {
@@ -15,11 +16,18 @@ export default function App() {
   // const [selectedLanguage, setSelectedLanguage] = useState();
   // const [values, setValues] = useState('');
   const [valueList, setValueList] = useState([]);
+  const [option, setOption] = useState('Dinheiro')
+  const [selected, setSelected] = useState(0)
+
   let elementsHTML = ''
 
   const handleSetValue = data => {
+    if(!data.values) {
+      alert('Por favor Mocinha, preencha o campo com o valor')
+    }
+    data.options = option
     tempt.push(data)
-    console.log(tempt)
+    // console.log(tempt)
   }
 
   // const setValuesInList = () => {
@@ -28,7 +36,7 @@ export default function App() {
 
   const saveValuesInList = () => {
     elementsHTML = insertElementsInHTML(tempt)
-    console.log('ELEMENTS', elementsHTML)
+    // console.log('ELEMENTS', elementsHTML)
   }
 
 
@@ -50,7 +58,7 @@ export default function App() {
 
         <Controller
           control={control}
-          name='name'
+          name='values'
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={styles.input}
@@ -62,10 +70,28 @@ export default function App() {
           )}
         />
 
-        <Button style={styles.buttons} title='adicionar' onPress={handleSubmit(handleSetValue)} />
-        <Button style={styles.buttons} title='salvar' onPress={saveValuesInList} />
-        <Button style={styles.buttons} title='limpar' onPress={() => setValueList([])} />
-        <Button style={styles.buttons} title='gerar PDF' onPress={generatePdf} />
+        <Radio 
+          selected={selected}
+          options={['PIX', 'Cartão', 'Dinheiro']}
+          horizontal={true}
+          onChangeSelect={(opt, i) => {
+            setOption(opt)
+            setSelected(i)
+          }}
+        />
+        
+        <View style={styles.buttonsContainer}>
+          <Button color='#40de4d' title='adicionar' onPress={handleSubmit(handleSetValue)} />
+        </View>
+        <View style={styles.buttonsContainer}>
+          <Button color='#40de4d' title='salvar' onPress={saveValuesInList} />
+        </View>
+        <View style={styles.buttonsContainer}>
+          <Button color='#40de4d' title='limpar' onPress={() => setValueList([])} />
+        </View>
+        <View style={styles.buttonsContainer}>
+          <Button color='#40de4d' title='gerar PDF' onPress={generatePdf} />
+        </View>
       </View>
       <StatusBar style="auto" />
 
@@ -79,7 +105,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     paddingVertical: '10%',
-    justifyContent: 'center'
   },
   containerHeader: {
     width: '100%'
@@ -93,11 +118,12 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 10,
-    borderWidth: 4,
+    borderWidth: 2,
     borderStyle: 'solid',
-    borderColor: '#000000'
+    borderColor: '#888',
+    borderRadius: 5
   },
-  buttons: {
-    marginHorizontal: 10,
+  buttonsContainer: {
+    marginTop: '5%',
   }
 });

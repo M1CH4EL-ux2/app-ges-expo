@@ -3,7 +3,7 @@ export function insertElementsInHTML(values) {
     console.log('inApp ' + values)
 
     for (let index = 0; index < values.length; index++) {
-        tempt = tempt + `<td>R$${values[index].name}</td>`
+        tempt = tempt + `<td>R$${values[index].values}</td>`
     }
 
     return `<html>
