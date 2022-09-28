@@ -7,6 +7,7 @@ export default function Radio({ selected, options = [], horizontal = false, onCh
         <View style={horizontal ? styles.horizontal : styles.vertical}>
             {options.map((opt, key) => (
                 <TouchableOpacity
+                    key={key}
                     onPress={() => onChangeSelect(opt, key)}
                     style={[
                         styles.optContainer,

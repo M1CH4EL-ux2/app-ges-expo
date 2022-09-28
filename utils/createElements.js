@@ -29,17 +29,30 @@ export function insertElementsInHTML(values) {
         }
     }
 
+    const sortColumns = () => {
+        for (let index = 0; index < values.length; index++) {
+            if(valuesColumnCard[index] && valuesColumnCash[index] && valuesColumnPix[index]) {
+                tempt = tempt + `
+                <tr>
+                    ${valuesColumnPix[index]}
+                    ${valuesColumnCard[index]}
+                    ${valuesColumnCash[index]}
+                </tr>
+                `
+            }
+        }
+    }
+
     createColumnPix()
     createColumnCash()
     createColumnCard()
+    sortColumns()
 
-    console.log(valuesColumnCard)
-    console.log(valuesColumnPix)
-    console.log(valuesColumnCash)
+    // console.log(valuesColumnCard)
+    // console.log(valuesColumnPix)
+    // console.log(valuesColumnCash)
 
-    for (let index = 0; index < values.length; index++) {
-        tempt = tempt + `<td>R$${values[index].values}</td>`
-    }
+    console.log(tempt)
 
     return `<html>
     <head>
@@ -73,14 +86,7 @@ export function insertElementsInHTML(values) {
                 <td>Cartão</td>
                 <td>Dinheiro</td>
             </tr>
-            <tr>
-                ${tempt}
-            </tr>
-            <tr>
-                <td>R$200,00</td>
-                <td>R$220,00</td>
-                <td>R$180,00</td>
-            </tr>
+            ${tempt}
         </table>
     </body>
     </html>
